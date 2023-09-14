@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #image-container {
+            width: 100vw;
+            overflow-x: scroll;
+            white-space: nowrap;
+            user-select: none; /* 這行禁止選擇文本或圖片 */
+            cursor: grab;
+        }
+
+        #image-container img {
+            width: auto;
+            height: 100vh;
+            pointer-events: none; /* 這行禁止圖片被拖放 */
+        }
+
+        #image-container:active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body>
+    <div id="image-container">
+        <img src="寶仁長圖.png" alt="滑動圖片">
+    </div>
+
+    <script>
+        const container = document.getElementById("image-container");
+        let isDragging = false;
+        let startX, startScroll;
+
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.pageX;
+            startScroll = container.scrollLeft;
+            container.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX;
+            const scrollDistance = (x - startX);
+            container.scrollLeft = startScroll - scrollDistance;
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mouseleave', () => {
+            isDragging = false;
+        });
+    </script>
+</body>
+</html>
